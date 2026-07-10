@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pratinjau Invoice - Code {N}</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .invoice-print-box { max-width: 800px; margin: 0 auto; background: #fff; padding: 48px;
+            box-shadow: var(--shadow-md); border-top: 7px solid var(--accent);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+        .inv-header { display: flex; justify-content: space-between; align-items: flex-start;
+            border-bottom: 2px solid #eee; padding-bottom: 24px; margin-bottom: 32px; }
+        .inv-header img { max-width: 160px; }
+        .inv-header-right { text-align: right; }
+        .inv-header-right h1 { font-size: 38px; font-weight: 900; letter-spacing: 3px;
+            color: var(--primary); margin-bottom: 12px; }
+        .inv-header-right .meta { font-size: 14px; line-height: 1.8; }
+        .inv-header-right .meta strong { color: var(--primary); }
+        .inv-parties { display: flex; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+        .inv-party { flex: 1; }
+        .inv-party h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-muted); margin-bottom: 8px; }
+        .inv-party .party-name { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+        .inv-party p { font-size: 14px; color: var(--text); line-height: 1.7; }
+        table.inv-items { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 14px; }
+        table.inv-items thead tr { background: var(--primary); color: #fff; }
+        table.inv-items thead th { padding: 12px 14px; font-weight: 600; }
+        table.inv-items thead th.right { text-align: right; }
+        table.inv-items thead th.center { text-align: center; }
+        table.inv-items tbody tr { border-bottom: 1px solid #eee; }
+        table.inv-items tbody tr:hover { background: var(--accent-light); }
+        table.inv-items tbody td { padding: 12px 14px; }
+        table.inv-items tbody td.right { text-align: right; font-weight: 600; }
+        table.inv-items tbody td.center { text-align: center; }
+        .inv-footer { display: flex; justify-content: space-between; gap: 32px; margin-top: 8px; flex-wrap: wrap; }
+        .inv-payment { flex: 1; min-width: 200px; }
+        .inv-payment h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-muted); margin-bottom: 10px; }
+        .inv-payment p { font-size: 14px; line-height: 1.9; }
+        .inv-payment strong { color: var(--primary); }
+        .inv-totals { min-width: 260px; }
+        table.totals-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        table.totals-table tr td { padding: 8px 4px; border-bottom: 1px solid #eee; }
+        table.totals-table tr td:first-child { color: var(--text-muted); }
+        table.totals-table tr td:last-child { text-align: right; font-weight: 600; color: var(--primary); }
+        table.totals-table tr.grand td { border-top: 2px solid var(--accent); border-bottom: none;
+            font-size: 16px; font-weight: 700; padding-top: 12px; }
+        table.totals-table tr.grand td:first-child { color: var(--primary); }
+        .notes-section { margin-top: 28px; padding: 16px 20px; background: var(--accent-light);
+            border-left: 4px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; font-size: 14px; }
+        .notes-section strong { display: block; margin-bottom: 6px; color: var(--primary); }
+        .inv-signature { text-align: right; margin-top: 40px; font-size: 14px; color: var(--text-muted); }
+        .inv-signature .sig-name { margin-top: 48px; font-weight: 700; color: var(--primary);
+            border-top: 1.5px solid #bbb; padding-top: 8px; display: inline-block; min-width: 160px; }
+        @media (max-width: 640px) {
+            .invoice-print-box { padding: 24px 16px; }
+            .inv-header { flex-direction: column; gap: 16px; }
+            .inv-header-right { text-align: left; }
+            .inv-parties { flex-direction: column; }
+            .inv-footer { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-shell">
+
+<!-- SIDEBAR -->
+<aside class="sidebar no-print">
+    <a href="index.html" class="sidebar-brand">
+        <img src="logo.png" alt="Code {N}">
+        <div class="sidebar-brand-text">
+            <span class="sidebar-brand-name">Code {N}</span>
+            <span class="sidebar-brand-sub">Management System</span>
+        </div>
+    </a>
+    <ul class="sidebar-nav">
+        <li class="sidebar-section-label">Menu Utama</li>
+        <li><a href="index.html"><span class="nav-icon">📊</span> Dashboard</a></li>
+        <li><a href="projects.html"><span class="nav-icon">📁</span> Proyek</a></li>
+        <li><a href="form.html"><span class="nav-icon">➕</span> Buat Invoice</a></li>
+        <li class="sidebar-section-label">Keuangan</li>
+        <li><a href="index.html"><span class="nav-icon">🧾</span> Semua Invoice</a></li>
+    </ul>
+    <div class="sidebar-footer">Code {N} © 2026</div>
+</aside>
+
+<div class="main-content">
+
+<header class="topbar no-print">
+    <div class="topbar-left">
+        <div>
+            <div class="topbar-title">Pratinjau Invoice</div>
+            <div class="topbar-breadcrumb">
+                <a href="index.html">Dashboard</a> <span>/</span> Invoice
+            </div>
+        </div>
+    </div>
+    <div class="topbar-right">
+        <a href="index.html" class="btn btn-outline btn-sm">← Dashboard</a>
+        <a href="#" class="btn btn-outline btn-sm" id="link-edit">✏️ Edit</a>
+        <button class="btn btn-success btn-sm" id="btn-mark-paid">✅ Tandai Lunas</button>
+        <button class="btn btn-primary" id="btn-print">🖨️ Cetak / Simpan PDF</button>
+        <div class="topbar-avatar">CN</div>
+    </div>
+</header>
+
+<div style="padding: 20px 28px 48px;" id="invoice-wrap">
+    <div class="invoice-print-box">
+
+        <!-- HEADER -->
+        <div class="inv-header">
+            <div>
+                <img src="logo.png" alt="Code {N} Logo">
+                <p style="margin-top:10px;font-size:13px;color:#666;">
+                    Instagram: @codeNirantara<br>
+                    Email: contact@coden.com
+                </p>
+            </div>
+            <div class="inv-header-right">
+                <h1>INVOICE</h1>
+                <div class="meta">
+                    <strong>No. Invoice:</strong> <span id="inv-number">-</span><br>
+                    <strong>Tanggal:</strong> <span id="inv-date">-</span><br>
+                    <strong>Jatuh Tempo:</strong> <span id="inv-due">-</span><br>
+                    <span id="inv-status-badge"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PARTIES -->
+        <div class="inv-parties">
+            <div class="inv-party">
+                <h4>Ditagihkan Kepada</h4>
+                <div class="party-name" id="client-name">-</div>
+                <p>
+                    <span id="client-address"></span><br>
+                    <span id="client-email"></span><br>
+                    <span id="client-phone"></span>
+                </p>
+            </div>
+            <div class="inv-party" style="text-align:right;">
+                <h4>Dari</h4>
+                <div class="party-name">Code {N} Studio</div>
+                <p>
+                    Jl. Contoh No. 1, Kota Anda<br>
+                    info@coden.com
+                </p>
+            </div>
+        </div>
+
+        <!-- ITEMS -->
+        <table class="inv-items">
+            <thead>
+                <tr>
+                    <th style="width:40px;">#</th>
+                    <th>Deskripsi Layanan / Barang</th>
+                    <th class="center" style="width:60px;">Qty</th>
+                    <th class="right" style="width:150px;">Harga Satuan</th>
+                    <th class="right" style="width:150px;">Total</th>
+                </tr>
+            </thead>
+            <tbody id="items-tbody">
+                <!-- Diisi via invoice.js -->
+            </tbody>
+        </table>
+
+        <!-- FOOTER: PEMBAYARAN + TOTALS -->
+        <div class="inv-footer">
+            <div class="inv-payment">
+                <h4>Informasi Pembayaran</h4>
+                <p>
+                    <strong>Bank:</strong> <span id="bank-name">-</span><br>
+                    <strong>No. Rekening:</strong> <span id="bank-account">-</span><br>
+                    <strong>Atas Nama:</strong> <span id="bank-holder">-</span>
+                </p>
+            </div>
+
+            <div class="inv-totals">
+                <table class="totals-table">
+                    <tr>
+                        <td>Subtotal</td>
+                        <td id="sum-subtotal">Rp 0</td>
+                    </tr>
+                    <tr>
+                        <td id="tax-pct-label">Pajak</td>
+                        <td id="sum-tax">Rp 0</td>
+                    </tr>
+                    <tr>
+                        <td>Diskon</td>
+                        <td id="sum-discount">Rp 0</td>
+                    </tr>
+                    <tr class="grand">
+                        <td>Total Keseluruhan</td>
+                        <td id="sum-grandtotal">Rp 0</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- CATATAN -->
+        <div class="notes-section" style="display:none;">
+            <strong>Catatan:</strong>
+            <span id="inv-notes"></span>
+        </div>
+
+        <!-- TANDA TANGAN -->
+        <div class="inv-signature">
+            <p>Hormat Kami,</p>
+            <div class="sig-name">Tim Code {N}</div>
+        </div>
+
+    </div>
+
+</div><!-- main-content -->
+</div><!-- app-shell -->
+
+<div id="toast"></div>
+
+<script src="js/projects.js"></script>
+<script src="js/api.js"></script>
+<script src="js/invoice.js"></script>
+
+</body>
+</html>

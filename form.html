@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Invoice - Code {N}</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <a href="index.html" class="sidebar-brand">
+        <img src="logo.png" alt="Code {N}">
+        <div class="sidebar-brand-text">
+            <span class="sidebar-brand-name">Code {N}</span>
+            <span class="sidebar-brand-sub">Management System</span>
+        </div>
+    </a>
+    <ul class="sidebar-nav">
+        <li class="sidebar-section-label">Menu Utama</li>
+        <li><a href="index.html"><span class="nav-icon">📊</span> Dashboard</a></li>
+        <li><a href="projects.html"><span class="nav-icon">📁</span> Proyek</a></li>
+        <li><a href="form.html" class="active"><span class="nav-icon">➕</span> Buat Invoice</a></li>
+        <li class="sidebar-section-label">Keuangan</li>
+        <li><a href="index.html"><span class="nav-icon">🧾</span> Semua Invoice</a></li>
+    </ul>
+    <div class="sidebar-footer">Code {N} © 2026</div>
+</aside>
+
+<div class="main-content">
+
+<header class="topbar">
+    <div class="topbar-left">
+        <div>
+            <div class="topbar-title" id="form-title">Buat Invoice Baru</div>
+            <div class="topbar-breadcrumb">
+                <a href="index.html">Dashboard</a> <span>/</span> Form Invoice
+            </div>
+        </div>
+    </div>
+    <div class="topbar-right">
+        <a href="index.html" class="btn btn-outline btn-sm">← Kembali</a>
+        <div class="topbar-avatar">CN</div>
+    </div>
+</header>
+
+<div class="page-body">
+
+    <!-- SECTION: INFO INVOICE -->
+    <div class="form-card">
+        <span class="form-section-title">Informasi Invoice</span>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="inv-number">Nomor Invoice <span style="color:red">*</span></label>
+                <input type="text" id="inv-number" placeholder="INV-202607-001">
+            </div>
+            <div class="form-group">
+                <label for="inv-status">Status</label>
+                <select id="inv-status">
+                    <option value="unpaid">Belum Bayar</option>
+                    <option value="paid">Lunas</option>
+                    <option value="draft">Draft</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="inv-date">Tanggal Invoice <span style="color:red">*</span></label>
+                <input type="date" id="inv-date">
+            </div>
+            <div class="form-group">
+                <label for="inv-due">Jatuh Tempo</label>
+                <input type="date" id="inv-due">
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION: DATA KLIEN -->
+    <div class="form-card">
+        <span class="form-section-title">Data Klien</span>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="client-name">Nama Klien / Perusahaan <span style="color:red">*</span></label>
+                <input type="text" id="client-name" placeholder="PT Maju Bersama">
+            </div>
+            <div class="form-group">
+                <label for="client-email">Email Klien</label>
+                <input type="email" id="client-email" placeholder="klien@email.com">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="client-phone">No. Telepon</label>
+                <input type="tel" id="client-phone" placeholder="08xx-xxxx-xxxx">
+            </div>
+            <div class="form-group">
+                <label for="client-address">Alamat</label>
+                <input type="text" id="client-address" placeholder="Jl. Contoh No. 1, Kota">
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION: ITEM / LAYANAN -->
+    <div class="form-card">
+        <span class="form-section-title">Item / Layanan</span>
+
+        <div class="items-table-wrap" style="margin-bottom:16px;">
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>Layanan / Deskripsi</th>
+                        <th style="width:80px;">Qty</th>
+                        <th style="width:160px;">Harga Satuan (Rp)</th>
+                        <th style="width:140px;text-align:right;">Total</th>
+                        <th style="width:50px;"></th>
+                    </tr>
+                </thead>
+                <tbody id="items-tbody">
+                    <!-- Baris ditambah via JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <button class="btn btn-outline" id="btn-add-row">+ Tambah Baris</button>
+
+        <!-- Ringkasan total -->
+        <div style="display:flex;justify-content:flex-end;margin-top:24px;">
+            <div class="summary-box">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="sum-subtotal">Rp 0</span>
+                </div>
+                <div class="summary-row" style="align-items:flex-start;flex-direction:column;gap:6px;">
+                    <div style="display:flex;justify-content:space-between;width:100%;">
+                        <span>Pajak (%)</span>
+                        <span id="sum-tax">0% → Rp 0</span>
+                    </div>
+                    <input type="number" id="tax-pct" value="0" min="0" max="100" placeholder="0"
+                        style="width:100%;padding:6px 10px;border:1.5px solid #ddd;border-radius:4px;font-size:13px;">
+                </div>
+                <div class="summary-row" style="align-items:flex-start;flex-direction:column;gap:6px;">
+                    <div style="display:flex;justify-content:space-between;width:100%;">
+                        <span>Diskon (Rp)</span>
+                        <span id="sum-discount">Rp 0</span>
+                    </div>
+                    <input type="number" id="discount" value="0" min="0" placeholder="0"
+                        style="width:100%;padding:6px 10px;border:1.5px solid #ddd;border-radius:4px;font-size:13px;">
+                </div>
+                <div class="summary-row">
+                    <span>Total Keseluruhan</span>
+                    <span id="sum-grandtotal">Rp 0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION: PEMBAYARAN -->
+    <div class="form-card">
+        <span class="form-section-title">Informasi Pembayaran</span>
+        <div class="form-row three">
+            <div class="form-group">
+                <label for="bank-name">Nama Bank</label>
+                <input type="text" id="bank-name" placeholder="BCA, Mandiri, BNI...">
+            </div>
+            <div class="form-group">
+                <label for="bank-account">Nomor Rekening</label>
+                <input type="text" id="bank-account" placeholder="1234567890">
+            </div>
+            <div class="form-group">
+                <label for="bank-holder">Atas Nama</label>
+                <input type="text" id="bank-holder" placeholder="Nama pemilik rekening">
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION: CATATAN -->
+    <div class="form-card">
+        <span class="form-section-title">Catatan (Opsional)</span>
+        <div class="form-group">
+            <textarea id="notes" placeholder="Catatan tambahan untuk klien, syarat pembayaran, ucapan terima kasih, dll."></textarea>
+        </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap;margin:32px 0 40px;">
+        <button class="btn btn-outline" id="btn-cancel">Batal</button>
+        <button class="btn btn-dark" id="btn-save">💾 Simpan Invoice</button>
+        <button class="btn btn-primary" id="btn-save-print">🖨️ Simpan & Cetak</button>
+    </div>
+
+</div><!-- page-body -->
+</div><!-- main-content -->
+</div><!-- app-shell -->
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script src="js/projects.js"></script>
+<script src="js/api.js"></script>
+<script src="js/form.js"></script>
+
+</body>
+</html>

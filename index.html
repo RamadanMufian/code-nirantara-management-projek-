@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Invoice - Code {N}</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar" id="sidebar">
+        <a href="index.html" class="sidebar-brand">
+            <img src="logo.png" alt="Code {N}">
+            <div class="sidebar-brand-text">
+                <span class="sidebar-brand-name">Code {N}</span>
+                <span class="sidebar-brand-sub">Management System</span>
+            </div>
+        </a>
+        <ul class="sidebar-nav">
+            <li class="sidebar-section-label">Menu Utama</li>
+            <li><a href="index.html" class="active"><span class="nav-icon">📊</span> Dashboard</a></li>
+            <li><a href="projects.html"><span class="nav-icon">📁</span> Proyek</a></li>
+            <li><a href="form.html"><span class="nav-icon">➕</span> Buat Invoice</a></li>
+            <li class="sidebar-section-label">Keuangan</li>
+            <li><a href="index.html"><span class="nav-icon">🧾</span> Semua Invoice</a></li>
+        </ul>
+        <div class="sidebar-footer">Code {N} © 2026</div>
+    </aside>
+
+    <div class="main-content">
+
+        <header class="topbar">
+            <div class="topbar-left">
+                <div>
+                    <div class="topbar-title">Dashboard Invoice</div>
+                    <div class="topbar-breadcrumb">Ringkasan keuangan & invoice</div>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <a href="projects.html" class="btn btn-outline btn-sm">📁 Proyek</a>
+                <a href="form.html" class="btn btn-primary">+ Buat Invoice</a>
+                <div class="topbar-avatar">CN</div>
+            </div>
+        </header>
+
+        <div class="page-body">
+
+            <div class="page-header">
+                <div>
+                    <h2>Dashboard Invoice</h2>
+                    <p>Kelola semua invoice Code {N} di satu tempat</p>
+                </div>
+                <a href="form.html" class="btn btn-primary">+ Buat Invoice Baru</a>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-icon">🧾</span>
+                    <span class="stat-label">Total Invoice</span>
+                    <span class="stat-value" id="stat-total">0</span>
+                    <span class="stat-sub">Semua invoice</span>
+                </div>
+                <div class="stat-card" style="--card-accent:#059669;">
+                    <span class="stat-icon">✅</span>
+                    <span class="stat-label">Lunas</span>
+                    <span class="stat-value" id="stat-paid" style="color:var(--success);">0</span>
+                    <span class="stat-sub">Invoice terbayar</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">⏳</span>
+                    <span class="stat-label">Belum Bayar</span>
+                    <span class="stat-value" id="stat-unpaid" style="color:var(--warning);">0</span>
+                    <span class="stat-sub">Menunggu pembayaran</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🚨</span>
+                    <span class="stat-label">Terlambat</span>
+                    <span class="stat-value" id="stat-overdue" style="color:var(--danger);">0</span>
+                    <span class="stat-sub">Lewat jatuh tempo</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">💰</span>
+                    <span class="stat-label">Total Pendapatan</span>
+                    <span class="stat-value" id="stat-revenue" style="font-size:16px;color:var(--accent-dark);">Rp 0</span>
+                    <span class="stat-sub">Dari invoice lunas</span>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-toolbar">
+                    <div class="table-toolbar-left">
+                        <div class="filter-tabs">
+                            <button class="filter-tab active filter-btn" data-filter="all">Semua</button>
+                            <button class="filter-tab filter-btn" data-filter="unpaid">Belum Bayar</button>
+                            <button class="filter-tab filter-btn" data-filter="paid">Lunas</button>
+                            <button class="filter-tab filter-btn" data-filter="overdue">Terlambat</button>
+                            <button class="filter-tab filter-btn" data-filter="draft">Draft</button>
+                        </div>
+                    </div>
+                    <div class="table-toolbar-right">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="search" id="search-input" placeholder="Cari nomor / klien...">
+                        </div>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No. Invoice</th>
+                            <th>Klien</th>
+                            <th>Tanggal</th>
+                            <th>Jatuh Tempo</th>
+                            <th class="right">Total</th>
+                            <th>Status</th>
+                            <th class="right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoice-tbody"></tbody>
+                </table>
+
+                <div class="table-empty" id="table-empty" style="display:none;">
+                    <span class="empty-icon">📄</span>
+                    <h3>Belum ada invoice</h3>
+                    <p>Invoice yang Anda buat akan muncul di sini.</p>
+                    <a href="form.html" class="btn btn-primary">+ Buat Invoice Pertama</a>
+                </div>
+            </div>
+
+        </div></div></div><div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div class="modal-header">
+            <h3>🗑️ Hapus Invoice?</h3>
+            <p>Invoice <strong id="modal-inv-number"></strong> akan dihapus permanen dan tidak dapat dikembalikan. Yakin?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" id="btn-cancel-delete">Batal</button>
+            <button class="btn btn-danger"  id="btn-confirm-delete">Ya, Hapus</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="js/projects.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
